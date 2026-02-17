@@ -2,51 +2,9 @@
 import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Importa el Layout que configuraremos mañana. Por ahora, asumimos que existe.
-import Layout from '../layouts/Layout.astro';
+// Aquí es donde vive la lógica de TypeScript (el "Frontmatter")
+---
 
-
-<Layout title="Misión Juvenil Monterrey - Donde la Fe se Hace Acción">
-  <main class="relative h-screen flex items-center justify-center overflow-hidden">
-    <video
-      autoplay
-      loop
-      muted
-      playsinline
-      poster="/images/placeholder-hero.jpg"
-      class="absolute z-0 w-full h-full object-cover brightness-50"
-    >
-      <source src="/videos/placeholder-hero.mp4" type="video/mp4" />
-      Tu navegador no soporta el tag de video.
-    </video>
-    <img
-      src="/images/placeholder-hero.jpg"
-      alt="Jóvenes en acción en la Misión Juvenil Monterrey"
-      class="absolute z-0 w-full h-full object-cover brightness-50 md:hidden"
-    />
-
-    <div class="relative z-10 text-center text-white p-6 max-w-4xl mx-auto">
-      <h1 class="text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-4 drop-shadow-lg [text-shadow:_0_5px_10px_rgb(0_0_0_/_60%)]">
-        Marcos 8,21
-      </h1>
-      <p class="text-xl md:text-3xl mb-8 font-light drop-shadow-md [text-shadow:_0_3px_6px_rgb(0_0_0_/_50%)]">
-        "¿Todavía no entienden?"
-      </p>
-      
-      <a
-        href="/unete"
-        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 text-lg uppercase tracking-wide"
-      >
-        Descubre tu Misión
-      </a>
-    </div>
-  </main>
+<Layout>
+	<Welcome />
 </Layout>
-
-<style is:global>
-  html, body {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden; /* Evita scroll horizontal */
-  }
-</style>
