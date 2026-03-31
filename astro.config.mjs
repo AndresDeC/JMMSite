@@ -23,7 +23,7 @@ export default defineConfig({
     resolve: {
       alias: {
         // Apuntamos al punto de entrada del servidor que Astro 5 usa ahora
-        'astro/app/entrypoint': 'astro/dist/core/app/index.js'
+        'astro/app/entrypoint': 'astro'
       }
     },
     optimizeDeps: {
