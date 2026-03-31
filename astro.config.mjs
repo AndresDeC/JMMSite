@@ -5,7 +5,6 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  output: 'hybrid', // <--- CAMBIA ESTO (Permite el Studio de Sanity)
   adapter: vercel(), // <--- AGREGA ESTO
   vite: {
     plugins: [tailwindcss()]
