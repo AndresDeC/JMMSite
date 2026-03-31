@@ -8,7 +8,6 @@ export default defineConfig({
   output: 'server', 
   adapter: vercel({
     webAnalytics: { enabled: true },
-    // Eliminamos edgeMiddleware para evitar conflictos de resolución
   }),
   integrations: [
     react(),
@@ -16,12 +15,18 @@ export default defineConfig({
       projectId: '7451e60s',
       dataset: 'production',
       useCdn: true,
-      studioAt: '/admin' // <--- IMPORTANTE: Agregamos esto aquí
+      studioAt: '/admin'
     }),
   ],
   vite: {
     plugins: [tailwindcss()],
-    // Agregamos esto para evitar que Vite rompa el entrypoint del servidor
+    resolve: {
+      alias: {
+        // HACK MANUAL: Engañamos a Vite para que encuentre el entrypoint 
+        // redirigiéndolo a la carpeta /dist que sí existe en tu node_modules/astro
+        'astro/app/entrypoint': 'astro/dist/index.js'
+      }
+    },
     optimizeDeps: {
       exclude: ['@astrojs/vercel']
     },
