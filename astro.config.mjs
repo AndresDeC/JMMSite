@@ -5,9 +5,22 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  adapter: vercel(), // <--- AGREGA ESTO
+  adapter: vercel(),
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    build: {
+      chunkSizeWarningLimit: 2000, // Sube el límite de aviso a 2MB
+      rollupOptions: {
+        output: {
+          // Esto ayuda a que Sanity no sea un solo bloque gigante
+          manualChunks(id) {
+            if (id.includes('node_modules/sanity')) {
+              return 'sanity';
+            }
+          }
+        }
+      }
+    }
   },
   integrations: [
     react(), 
@@ -15,7 +28,6 @@ export default defineConfig({
       projectId: '7451e60s',
       dataset: 'production',
       useCdn: true,
-      studioAt: '/admin', 
     })
   ]
 });
