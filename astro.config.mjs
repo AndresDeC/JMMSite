@@ -1,8 +1,7 @@
-// @ts-check
+import { defineConfig } from 'astro/config';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import sanity from '@sanity/astro';
-import tailwindcss from '@tailwindcss/vite';
-import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   vite: {
@@ -11,10 +10,10 @@ export default defineConfig({
   integrations: [
     react(), 
     sanity({
-      // Usamos import.meta.env para que Astro lo jale en el build
-      projectId: '65f6y8u9', 
+      projectId: '7451e60s', // <--- Solo pega el ID que sacaste de la web
       dataset: 'production',
       useCdn: true,
+      studioAt: '/admin', // <--- Esto es clave: El CMS vivirá en tuweb.com/admin
     })
   ]
 });
