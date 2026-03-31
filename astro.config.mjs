@@ -6,7 +6,6 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   adapter: vercel(), // <--- AGREGA ESTO
-  output: 'static',
   vite: {
     plugins: [tailwindcss()]
   },
