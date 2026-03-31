@@ -5,7 +5,7 @@ import { deskTool } from 'sanity/desk';
 export default defineConfig({
   name: 'default',
   title: 'JM Monterrey Admin',
-  projectId: 'tu_id_real',
+  projectId: '7451e60s',
   dataset: 'production',
   plugins: [deskTool()],
   schema: {
