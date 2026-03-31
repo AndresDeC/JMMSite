@@ -26,8 +26,6 @@ export default defineConfig({
     plugins: [tailwindcss()],
     resolve: {
       alias: {
-        // EL HACK FINAL: Apuntamos directo al archivo físico que vimos en tu video.
-        // Si no está en /core/app/index.js, intenta quitando el '/core'
         'astro/app/entrypoint': path.resolve(__dirname, './node_modules/astro/dist/core/app/index.js')
       }
     },
