@@ -1,5 +1,5 @@
 import react from '@astrojs/react';
-import vercel from '@astrojs/vercel/static'; // <--- IMPORTA ESTO
+import vercel from '@astrojs/vercel'; // <--- IMPORTA ESTO
 import sanity from '@sanity/astro';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
