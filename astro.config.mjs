@@ -3,6 +3,10 @@ import vercel from '@astrojs/vercel';
 import sanity from '@sanity/astro';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   output: 'server', 
@@ -22,8 +26,9 @@ export default defineConfig({
     plugins: [tailwindcss()],
     resolve: {
       alias: {
-        // Apuntamos al punto de entrada del servidor que Astro 5 usa ahora
-        'astro/app/entrypoint': 'astro/dist/app/index.js'
+        // EL HACK FINAL: Apuntamos directo al archivo físico que vimos en tu video.
+        // Si no está en /core/app/index.js, intenta quitando el '/core'
+        'astro/app/entrypoint': path.resolve(__dirname, './node_modules/astro/dist/core/app/index.js')
       }
     },
     optimizeDeps: {
