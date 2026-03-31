@@ -1,15 +1,14 @@
 import react from '@astrojs/react';
-import vercel from '@astrojs/vercel'; // Asegúrate que el import sea así
+import vercel from '@astrojs/vercel';
 import sanity from '@sanity/astro';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  // Forzamos el modo servidor para que el admin funcione
   output: 'server', 
   adapter: vercel({
     webAnalytics: { enabled: true },
-    edgeMiddleware: true // <--- Cambiamos a arquitectura Edge
+    // Eliminamos edgeMiddleware para evitar conflictos de resolución
   }),
   integrations: [
     react(),
@@ -17,10 +16,15 @@ export default defineConfig({
       projectId: '7451e60s',
       dataset: 'production',
       useCdn: true,
+      studioAt: '/admin' // <--- IMPORTANTE: Agregamos esto aquí
     }),
   ],
   vite: {
     plugins: [tailwindcss()],
+    // Agregamos esto para evitar que Vite rompa el entrypoint del servidor
+    optimizeDeps: {
+      exclude: ['@astrojs/vercel']
+    },
     build: {
       chunkSizeWarningLimit: 2000,
       rollupOptions: {
