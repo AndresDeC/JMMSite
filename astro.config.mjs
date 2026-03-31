@@ -24,7 +24,7 @@ export default defineConfig({
       alias: {
         // HACK MANUAL: Engañamos a Vite para que encuentre el entrypoint 
         // redirigiéndolo a la carpeta /dist que sí existe en tu node_modules/astro
-        'astro/app/entrypoint': 'astro/dist/index.js'
+        'astro/app/entrypoint': 'astro'
       }
     },
     optimizeDeps: {
