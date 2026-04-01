@@ -1,4 +1,4 @@
-// schemaTypes/index.ts
-import { postType } from './postType'
+import { eventType } from './event'
+// import { otroTipo } from './otroTipo'
 
-export const schemaTypes = [postType]
+export const schemaTypes = [eventType]

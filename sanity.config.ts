@@ -10,7 +10,7 @@ export default defineConfig({
   plugins: [structureTool()],
   schema: {
     types: [
-      /* Aquí irán tus tipos de contenido como 'post' o 'evento' */
+      schemaTypes,
     ],
   },
 });
