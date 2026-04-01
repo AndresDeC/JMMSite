@@ -1,1 +1,6 @@
 @import "tailwindcss";
+@theme {
+  --color-jm-blue: #003876;
+  --color-jm-gold: #C5A059;
+  --color-jm-cream: #FDFCF8;
+}

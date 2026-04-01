@@ -2,12 +2,11 @@
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 
-// Importación de imágenes (Verifica que la extensión sea .jpeg o .jpg)
+// Importación de imágenes desde src/assets
+// Asegúrate de que los nombres coincidan exactamente con tus archivos
 import fotoAvance from '../assets/casa-construccion-1.jpeg';
 import fotoEquipo from '../assets/casa-construccion-2.jpeg';
 import fotoConstruccion from '../assets/casa-construccion.jpeg';
-// Nota: Para el slider necesitas una imagen del "antes" o el "render"
-// import fotoRender from '../assets/casa-render.jpeg'; 
 
 const avances = [
   {
@@ -26,16 +25,19 @@ const avances = [
 ---
 
 <Layout title="Nuestra Casa JM | Monterrey">
-  <section class="relative h-[70vh] flex items-center justify-center overflow-hidden bg-jm-blue">
+  <section class="relative h-[70vh] flex items-center justify-center overflow-hidden bg-[#003876]">
     <Image 
       src={fotoConstruccion} 
       alt="Progreso de la obra" 
       class="absolute inset-0 w-full h-full object-cover opacity-40"
+      loading="eager"
     />
     <div class="relative z-10 text-center px-6">
-      <span class="text-jm-gold font-bold tracking-[0.3em] uppercase text-sm">Sede Monterrey</span>
-      <h1 class="text-6xl md:text-8xl text-white font-serif mt-4 tracking-tighter">Casa <span class="italic text-jm-gold">JM</span></h1>
-      <p class="text-white/80 max-w-xl mx-auto mt-6 text-lg font-light">
+      <span class="text-[#C5A059] font-bold tracking-[0.3em] uppercase text-sm">Sede Monterrey</span>
+      <h1 class="text-6xl md:text-8xl text-white font-serif mt-4 tracking-tighter">
+        Casa <span class="italic text-[#C5A059]">JM</span>
+      </h1>
+      <p class="text-white/90 max-w-xl mx-auto mt-6 text-lg font-light">
         Más que paredes, estamos construyendo el hogar para las futuras generaciones de la Juventud Masculina.
       </p>
     </div>
@@ -44,24 +46,24 @@ const avances = [
   <section class="max-w-5xl mx-auto px-6 -mt-20 relative z-20">
     <div class="bg-white rounded-[2.5rem] shadow-2xl p-8 md:p-12 border border-slate-100 grid md:grid-cols-2 gap-12 items-center">
       <div>
-        <h2 class="text-3xl font-serif text-jm-blue mb-4">Suma tu ladrillo</h2>
+        <h2 class="text-3xl font-serif text-[#003876] mb-4">Suma tu ladrillo</h2>
         <p class="text-slate-600 mb-8 leading-relaxed">
           La Casa JM se construye gracias a la generosidad de aliados como tú. Cada donativo directo se destina íntegramente a los materiales de construcción.
         </p>
         <div class="flex flex-col sm:flex-row gap-4">
-          <a href="/donar" class="bg-jm-gold text-jm-blue font-bold px-10 py-4 rounded-full text-center hover:bg-jm-blue hover:text-white transition-all no-underline shadow-xl shadow-jm-gold/20">
+          <a href="/donar" class="bg-[#C5A059] text-[#003876] font-bold px-10 py-4 rounded-full text-center hover:bg-[#003876] hover:text-white transition-all no-underline shadow-xl shadow-[#C5A059]/20">
             Donar ahora
           </a>
         </div>
       </div>
       
-      <div class="bg-jm-cream p-8 rounded-3xl border border-jm-gold/20">
-        <div class="flex justify-between mb-3 font-bold text-jm-blue text-sm uppercase tracking-wider">
+      <div class="bg-[#FDFCF8] p-8 rounded-3xl border border-[#C5A059]/20">
+        <div class="flex justify-between mb-3 font-bold text-[#003876] text-sm uppercase tracking-wider">
           <span>Meta de Construcción</span>
           <span>75%</span>
         </div>
         <div class="w-full bg-slate-200 rounded-full h-4 overflow-hidden shadow-inner">
-          <div class="bg-jm-gold h-full rounded-full transition-all duration-1000" style="width: 75%"></div>
+          <div class="bg-[#C5A059] h-full rounded-full transition-all duration-1000" style="width: 75%"></div>
         </div>
         <p class="text-xs text-slate-500 mt-6 text-center italic font-medium">
           "Nada sin Ti, nada sin nosotros."
@@ -72,49 +74,57 @@ const avances = [
 
   <section class="max-w-7xl mx-auto py-24 px-6">
     <div class="text-center mb-16">
-      <h2 class="text-4xl font-serif text-jm-blue italic underline decoration-jm-gold/30 underline-offset-8">Testigos del crecimiento</h2>
+      <h2 class="text-4xl font-serif text-[#003876] italic underline decoration-[#C5A059]/30 underline-offset-8"> Testigos del crecimiento </h2>
     </div>
     
     <div class="grid md:grid-cols-2 gap-12">
       <div class="group">
-        <div class="overflow-hidden rounded-3xl shadow-lg aspect-[16/10] mb-6 border border-slate-100">
-          <Image src={fotoAvance} alt="Detalle de avance" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+        <div class="overflow-hidden rounded-3xl shadow-lg aspect-[16/10] mb-6 border border-slate-100 bg-slate-200">
+          <Image 
+            src={fotoAvance} 
+            alt="Detalle de avance" 
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+          />
         </div>
         <div class="px-2">
-          <h3 class="text-2xl font-serif text-jm-blue font-bold mb-2">Cuidando cada detalle</h3>
+          <h3 class="text-2xl font-serif text-[#003876] font-bold mb-2">Cuidando cada detalle</h3>
           <p class="text-slate-600 leading-relaxed">Supervisión constante para asegurar que nuestra casa sea un lugar seguro, digno y funcional para todos nuestros encuentros.</p>
         </div>
       </div>
 
       <div class="group md:mt-24">
-        <div class="overflow-hidden rounded-3xl shadow-lg aspect-[16/10] mb-6 border border-slate-100">
-          <Image src={fotoEquipo} alt="Equipo de trabajo" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+        <div class="overflow-hidden rounded-3xl shadow-lg aspect-[16/10] mb-6 border border-slate-100 bg-slate-200">
+          <Image 
+            src={fotoEquipo} 
+            alt="Equipo de trabajo" 
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+          />
         </div>
         <div class="px-2">
-          <h3 class="text-2xl font-serif text-jm-blue font-bold mb-2">Comunidad en acción</h3>
-          <p class="text-slate-600 leading-relaxed">No solo es una obra civil; es una familia trabajando unida por un ideal común. El esfuerzo de muchos manos regias.</p>
+          <h3 class="text-2xl font-serif text-[#003876] font-bold mb-2">Comunidad en acción</h3>
+          <p class="text-slate-600 leading-relaxed">No solo es una obra civil; es una familia trabajando unida por un ideal común. El esfuerzo de muchas manos regias.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="comunicados" class="bg-slate-50 py-24 border-y border-slate-200">
+  <section id="comunicados" class="bg-slate-100/50 py-24 border-y border-slate-200">
     <div class="max-w-4xl mx-auto px-6">
       <div class="text-center mb-16">
-        <span class="text-jm-gold font-bold text-sm tracking-widest uppercase">Transparencia</span>
-        <h2 class="text-4xl font-serif text-jm-blue mt-2">Bitácora de Obra</h2>
+        <span class="text-[#C5A059] font-bold text-sm tracking-widest uppercase">Transparencia</span>
+        <h2 class="text-4xl font-serif text-[#003876] mt-2">Bitácora de Obra</h2>
       </div>
 
       <div class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
         {avances.map((item) => (
           <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-            <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-jm-blue text-white shadow-lg shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-              <svg class="fill-current w-3 h-3" viewBox="0 0 12 12"><path d="M10.422 1.257 4.655 7.025 1.578 3.948 0 5.527l4.655 4.655j7.345-7.345-1.578-1.58z"/></svg>
+            <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-[#003876] text-white shadow-lg shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+              <svg class="fill-current w-3 h-3" viewBox="0 0 12 12"><path d="M10.422 1.257 4.655 7.025 1.578 3.948 0 5.527l4.655 4.655 7.345-7.345-1.578-1.58z"/></svg>
             </div>
-            <div class="w-[calc(100%-4rem)] md:w-[45%] bg-white p-8 rounded-3xl shadow-sm border border-slate-100 group-hover:shadow-xl group-hover:border-jm-gold/30 transition-all duration-300">
+            <div class="w-[calc(100%-4rem)] md:w-[45%] bg-white p-8 rounded-3xl shadow-sm border border-slate-100 group-hover:shadow-xl group-hover:border-[#C5A059]/30 transition-all duration-300">
               <div class="flex items-center justify-between gap-4 mb-2">
-                <div class="font-bold text-jm-blue font-serif text-xl">{item.titulo}</div>
-                <time class="text-[10px] font-black text-jm-gold uppercase tracking-tighter bg-jm-gold/10 px-2 py-1 rounded">{item.fecha}</time>
+                <div class="font-bold text-[#003876] font-serif text-xl">{item.titulo}</div>
+                <time class="text-[10px] font-black text-[#C5A059] uppercase tracking-tighter bg-[#C5A059]/10 px-2 py-1 rounded">{item.fecha}</time>
               </div>
               <div class="text-slate-500 text-sm leading-relaxed font-sans">{item.desc}</div>
             </div>
@@ -124,13 +134,12 @@ const avances = [
     </div>
   </section>
 
-  <footer class="py-12 text-center bg-jm-blue text-white/60 text-xs tracking-widest uppercase">
+  <footer class="py-12 text-center bg-[#003876] text-white/60 text-xs tracking-widest uppercase">
     Juventud Masculina Monterrey © 2026 — Sede Territorial
   </footer>
 </Layout>
 
 <style>
-  /* Suaviza el scroll por si usas anclas */
   html {
     scroll-behavior: smooth;
   }
