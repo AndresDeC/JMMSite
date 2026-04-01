@@ -26,7 +26,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
     resolve: {
       alias: {
-        'astro/app/entrypoint': path.resolve(__dirname, './node_modules/astro/dist/core/index.js')
+        'astro/app/entrypoint': path.resolve(__dirname, './node_modules/astro/dist/core/app/index.js')
       }
     },
     optimizeDeps: {
