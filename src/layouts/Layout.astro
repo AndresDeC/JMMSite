@@ -36,36 +36,33 @@ const { title = "JM Monterrey | Misión Juvenil" } = Astro.props;
 </html>
 
 <style is:global>
-    :root {
-        --jm-blue: #003876;
-        --jm-gold: #C5A059;
-        /* Este crema es perfecto, manténlo siempre */
-        --jm-cream: #f1ff76da; 
-        /* Un gris muy oscuro pero no negro total para los textos */
-        --jm-text: #080808; 
-		--jm-shadow: rgba(0, 0, 0, 0.1);
-    }
+  :root {
+    /* FONDO: Un crema 'Arena' que quita todo el brillo del blanco */
+    --jm-bg: #F2EFE9; 
+    
+    /* PRIMARIO: Azul Oxford (más serio y profundo que el azul estándar) */
+    --jm-blue: #002855; 
+    
+    /* ACENTO: Oro Viejo (menos brillante, más tirando a bronce elegante) */
+    --jm-gold: #AD8B45; 
+    
+    /* TARJETAS: Blanco 'Hueso' para que resalten del fondo sin brillar */
+    --jm-card: #FAF9F6;
+    
+    /* TEXTO: Un gris carbón para que no sea negro puro (más suave al leer) */
+    --jm-text: #2D3436;
+  }
 
-    html,
-    body {
-        margin: 0;
-        width: 100%;
-        min-height: 100%;
-        background-color: var(--jm-cream);
-        color: var(--jm-text);
-        font-family: 'Inter', sans-serif;
-        scroll-behavior: smooth;
-        line-height: 1.6;
-    }
+  html, body {
+    background-color: var(--jm-bg);
+    color: var(--jm-text);
+    font-family: 'Inter', system-ui, sans-serif;
+  }
 
-    h1, h2, h3, h4, .font-serif {
-        font-family: 'Playfair Display', serif;
-        color: var(--jm-gold); /* Los títulos en el azul de la JM se ven imponentes */
-        font-weight: 700;
-    }
-
-    /* Clase utilitaria por si quieres forzar el color oro en algún texto */
-    .text-gold {
-        color: var(--jm-gold);
-    }
+  /* Títulos con Serif para ese look de 'Institución/Herencia' */
+  h1, h2, h3, .font-serif {
+    font-family: 'Playfair Display', serif;
+    color: var(--jm-blue);
+    letter-spacing: -0.02em;
+  }
 </style>
