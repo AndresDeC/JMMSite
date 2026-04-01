@@ -40,9 +40,10 @@ const { title = "JM Monterrey | Misión Juvenil" } = Astro.props;
         --jm-blue: #003876;
         --jm-gold: #C5A059;
         /* Este crema es perfecto, manténlo siempre */
-        --jm-cream: #FDFCF8; 
+        --jm-cream: #f1ff76da; 
         /* Un gris muy oscuro pero no negro total para los textos */
-        --jm-text: #1F2937; 
+        --jm-text: #080808; 
+		--jm-shadow: rgba(0, 0, 0, 0.1);
     }
 
     html,
@@ -59,7 +60,7 @@ const { title = "JM Monterrey | Misión Juvenil" } = Astro.props;
 
     h1, h2, h3, h4, .font-serif {
         font-family: 'Playfair Display', serif;
-        color: var(--jm-blue); /* Los títulos en el azul de la JM se ven imponentes */
+        color: var(--jm-gold); /* Los títulos en el azul de la JM se ven imponentes */
         font-weight: 700;
     }
 
