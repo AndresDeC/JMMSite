@@ -1,12 +1,7 @@
 ---
-import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 
-// Importación de imágenes (Asegúrate que existan en src/assets/)
-import fotoAvance from '../assets/casa-construccion-1.jpeg';
-import fotoEquipo from '../assets/casa-construccion-2.jpeg';
-import fotoConstruccion from '../assets/casa-construccion.jpeg';
-
+// Ya no importamos las imágenes, Astro las buscará en /public automáticamente
 const avances = [
   {
     fecha: 'Marzo 2026',
@@ -24,11 +19,10 @@ const avances = [
 <Layout title="Nuestra Casa JM | Monterrey">
   <section class="relative h-[70vh] flex items-center justify-center overflow-hidden bg-[#003876]">
     <div class="absolute inset-0 z-0">
-      <Image 
-        src={fotoConstruccion} 
+      <img 
+        src="/casa-construccion.jpeg" 
         alt="Progreso de la obra" 
         class="w-full h-full object-cover opacity-40"
-        loading="eager"
       />
     </div>
     
@@ -78,8 +72,8 @@ const avances = [
     <div class="grid md:grid-cols-2 gap-12">
       <div class="group">
         <div class="overflow-hidden rounded-3xl shadow-lg aspect-[16/10] mb-6 border border-slate-100 bg-slate-200">
-          <Image 
-            src={fotoAvance} 
+          <img 
+            src="/casa-construccion-1.jpeg" 
             alt="Detalle de avance" 
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
           />
@@ -90,8 +84,8 @@ const avances = [
 
       <div class="group md:mt-24">
         <div class="overflow-hidden rounded-3xl shadow-lg aspect-[16/10] mb-6 border border-slate-100 bg-slate-200">
-          <Image 
-            src={fotoEquipo} 
+          <img 
+            src="/casa-construccion-2.jpeg" 
             alt="Equipo de trabajo" 
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
           />
@@ -102,8 +96,8 @@ const avances = [
     </div>
   </section>
 
-  <section class="bg-slate-50 py-24 border-y border-slate-200">
-    <div class="max-w-4xl mx-auto px-6 text-center">
+  <section class="bg-slate-50 py-24 border-y border-slate-200 text-center">
+    <div class="max-w-4xl mx-auto px-6">
       <h2 class="text-4xl font-serif text-[#003876] mb-12">Bitácora de Obra</h2>
       <div class="space-y-8 text-left">
         {avances.map((item) => (
