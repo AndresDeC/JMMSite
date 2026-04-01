@@ -2,8 +2,7 @@
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 
-// Importación de imágenes desde src/assets
-// Asegúrate de que los nombres coincidan exactamente con tus archivos
+// Importación de imágenes (Asegúrate que existan en src/assets/)
 import fotoAvance from '../assets/casa-construccion-1.jpeg';
 import fotoEquipo from '../assets/casa-construccion-2.jpeg';
 import fotoConstruccion from '../assets/casa-construccion.jpeg';
@@ -13,25 +12,26 @@ const avances = [
     fecha: 'Marzo 2026',
     titulo: 'Instalaciones Eléctricas',
     desc: 'Comenzamos con el cableado inteligente que conectará el Capitalario físico con el sistema central.',
-    status: 'En proceso'
   },
   {
     fecha: 'Enero 2026',
     titulo: 'Estructura Principal',
     desc: 'Se finalizó con éxito el techado del salón de usos múltiples y áreas comunes.',
-    status: 'Completado'
   }
 ];
 ---
 
 <Layout title="Nuestra Casa JM | Monterrey">
   <section class="relative h-[70vh] flex items-center justify-center overflow-hidden bg-[#003876]">
-    <Image 
-      src={fotoConstruccion} 
-      alt="Progreso de la obra" 
-      class="absolute inset-0 w-full h-full object-cover opacity-40"
-      loading="eager"
-    />
+    <div class="absolute inset-0 z-0">
+      <Image 
+        src={fotoConstruccion} 
+        alt="Progreso de la obra" 
+        class="w-full h-full object-cover opacity-40"
+        loading="eager"
+      />
+    </div>
+    
     <div class="relative z-10 text-center px-6">
       <span class="text-[#C5A059] font-bold tracking-[0.3em] uppercase text-sm">Sede Monterrey</span>
       <h1 class="text-6xl md:text-8xl text-white font-serif mt-4 tracking-tighter">
@@ -50,11 +50,9 @@ const avances = [
         <p class="text-slate-600 mb-8 leading-relaxed">
           La Casa JM se construye gracias a la generosidad de aliados como tú. Cada donativo directo se destina íntegramente a los materiales de construcción.
         </p>
-        <div class="flex flex-col sm:flex-row gap-4">
-          <a href="/donar" class="bg-[#C5A059] text-[#003876] font-bold px-10 py-4 rounded-full text-center hover:bg-[#003876] hover:text-white transition-all no-underline shadow-xl shadow-[#C5A059]/20">
-            Donar ahora
-          </a>
-        </div>
+        <a href="/donar" class="inline-block bg-[#C5A059] text-[#003876] font-bold px-10 py-4 rounded-full text-center hover:bg-[#003876] hover:text-white transition-all no-underline shadow-xl shadow-[#C5A059]/20">
+          Donar ahora
+        </a>
       </div>
       
       <div class="bg-[#FDFCF8] p-8 rounded-3xl border border-[#C5A059]/20">
@@ -63,7 +61,7 @@ const avances = [
           <span>75%</span>
         </div>
         <div class="w-full bg-slate-200 rounded-full h-4 overflow-hidden shadow-inner">
-          <div class="bg-[#C5A059] h-full rounded-full transition-all duration-1000" style="width: 75%"></div>
+          <div class="bg-[#C5A059] h-full rounded-full" style="width: 75%"></div>
         </div>
         <p class="text-xs text-slate-500 mt-6 text-center italic font-medium">
           "Nada sin Ti, nada sin nosotros."
@@ -74,7 +72,7 @@ const avances = [
 
   <section class="max-w-7xl mx-auto py-24 px-6">
     <div class="text-center mb-16">
-      <h2 class="text-4xl font-serif text-[#003876] italic underline decoration-[#C5A059]/30 underline-offset-8"> Testigos del crecimiento </h2>
+      <h2 class="text-4xl font-serif text-[#003876] italic underline decoration-[#C5A059]/30 underline-offset-8">Testigos del crecimiento</h2>
     </div>
     
     <div class="grid md:grid-cols-2 gap-12">
@@ -86,10 +84,8 @@ const avances = [
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
           />
         </div>
-        <div class="px-2">
-          <h3 class="text-2xl font-serif text-[#003876] font-bold mb-2">Cuidando cada detalle</h3>
-          <p class="text-slate-600 leading-relaxed">Supervisión constante para asegurar que nuestra casa sea un lugar seguro, digno y funcional para todos nuestros encuentros.</p>
-        </div>
+        <h3 class="text-2xl font-serif text-[#003876] font-bold mb-2">Cuidando cada detalle</h3>
+        <p class="text-slate-600 leading-relaxed">Supervisión constante para asegurar que nuestra casa sea un lugar seguro y funcional.</p>
       </div>
 
       <div class="group md:mt-24">
@@ -100,34 +96,23 @@ const avances = [
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
           />
         </div>
-        <div class="px-2">
-          <h3 class="text-2xl font-serif text-[#003876] font-bold mb-2">Comunidad en acción</h3>
-          <p class="text-slate-600 leading-relaxed">No solo es una obra civil; es una familia trabajando unida por un ideal común. El esfuerzo de muchas manos regias.</p>
-        </div>
+        <h3 class="text-2xl font-serif text-[#003876] font-bold mb-2">Comunidad en acción</h3>
+        <p class="text-slate-600 leading-relaxed">No solo es una obra civil; es una familia trabajando unida por un ideal común.</p>
       </div>
     </div>
   </section>
 
-  <section id="comunicados" class="bg-slate-100/50 py-24 border-y border-slate-200">
-    <div class="max-w-4xl mx-auto px-6">
-      <div class="text-center mb-16">
-        <span class="text-[#C5A059] font-bold text-sm tracking-widest uppercase">Transparencia</span>
-        <h2 class="text-4xl font-serif text-[#003876] mt-2">Bitácora de Obra</h2>
-      </div>
-
-      <div class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+  <section class="bg-slate-50 py-24 border-y border-slate-200">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-serif text-[#003876] mb-12">Bitácora de Obra</h2>
+      <div class="space-y-8 text-left">
         {avances.map((item) => (
-          <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-            <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-[#003876] text-white shadow-lg shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-              <svg class="fill-current w-3 h-3" viewBox="0 0 12 12"><path d="M10.422 1.257 4.655 7.025 1.578 3.948 0 5.527l4.655 4.655 7.345-7.345-1.578-1.58z"/></svg>
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+            <div class="flex justify-between items-center mb-2">
+              <h4 class="font-bold text-[#003876] text-xl">{item.titulo}</h4>
+              <span class="text-xs font-bold text-[#C5A059] bg-[#C5A059]/10 px-2 py-1 rounded">{item.fecha}</span>
             </div>
-            <div class="w-[calc(100%-4rem)] md:w-[45%] bg-white p-8 rounded-3xl shadow-sm border border-slate-100 group-hover:shadow-xl group-hover:border-[#C5A059]/30 transition-all duration-300">
-              <div class="flex items-center justify-between gap-4 mb-2">
-                <div class="font-bold text-[#003876] font-serif text-xl">{item.titulo}</div>
-                <time class="text-[10px] font-black text-[#C5A059] uppercase tracking-tighter bg-[#C5A059]/10 px-2 py-1 rounded">{item.fecha}</time>
-              </div>
-              <div class="text-slate-500 text-sm leading-relaxed font-sans">{item.desc}</div>
-            </div>
+            <p class="text-slate-500">{item.desc}</p>
           </div>
         ))}
       </div>
@@ -135,7 +120,7 @@ const avances = [
   </section>
 
   <footer class="py-12 text-center bg-[#003876] text-white/60 text-xs tracking-widest uppercase">
-    Juventud Masculina Monterrey © 2026 — Sede Territorial
+    Juventud Masculina Monterrey © 2026
   </footer>
 </Layout>
 
@@ -143,158 +128,4 @@ const avances = [
   html {
     scroll-behavior: smooth;
   }
-    /* Colores Oficiales */
-    :root {
-        --jm-blue: #003876;
-        --jm-gold: #C5A059;
-        --jm-white: #FDFCF8;
-        --jm-dark: #1a1a1a;
-    }
-
-    #container {
-        font-family: 'Inter', system-ui, sans-serif;
-        height: 100vh;
-        background-color: var(--jm-white);
-        color: var(--jm-dark);
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-    }
-
-    #background-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at top right, rgba(197, 160, 89, 0.1), transparent),
-                    radial-gradient(circle at bottom left, rgba(0, 56, 118, 0.05), transparent);
-        z-index: -1;
-    }
-
-    main {
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 2rem;
-    }
-
-    #hero {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1.5rem;
-    }
-
-    .badge {
-        background: rgba(0, 56, 118, 0.1);
-        color: var(--jm-blue);
-        padding: 6px 16px;
-        border-radius: 99px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-    }
-
-    h1 {
-        font-family: 'Playfair Display', serif; /* Asegúrate de cargarla en el Layout */
-        font-size: clamp(5rem, 8vw, 5rem);
-        line-height: 1.1;
-        margin: 0;
-        font-weight: 800;
-        color: var(--jm-blue);
-    }
-
-    .highlight {
-        color: var(--jm-gold);
-        font-style: italic;
-    }
-
-    .subtitle {
-        font-size: 1.25rem;
-        color: #666;
-        max-width: 600px;
-        margin: 0;
-    }
-
-    #links {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1rem;
-    }
-
-    .button {
-        padding: 12px 28px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .button.primary {
-        background: var(--jm-blue);
-        color: white;
-    }
-
-    .button.secondary {
-        border: 2px solid var(--jm-blue);
-        color: var(--jm-blue);
-    }
-
-    .button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 56, 118, 0.15);
-    }
-
-    .box {
-        background: white;
-        padding: 24px;
-        border-radius: 20px;
-        border: 1px solid rgba(0,0,0,0.05);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    }
-
-    #quote-box {
-        position: absolute;
-        bottom: 40px;
-        right: 40px;
-        max-width: 320px;
-    }
-
-    h2 {
-        font-size: 1.25rem;
-        margin: 0.5rem 0;
-        color: var(--jm-blue);
-    }
-
-    p {
-        font-size: 0.95rem;
-        line-height: 1.6;
-        color: #555;
-    }
-
-    @media (max-width: 768px) {
-        #container {
-            height: auto;
-            padding: 100px 0;
-        }
-        #quote-box {
-            position: relative;
-            bottom: 0;
-            right: 0;
-            margin: 2rem;
-            max-width: none;
-        }
-        #links {
-            flex-direction: column;
-            width: 100%;
-        }
-        .button {
-            justify-content: center;
-        }
-    }
 </style>
