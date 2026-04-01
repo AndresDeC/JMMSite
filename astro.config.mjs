@@ -3,12 +3,9 @@ import vercel from '@astrojs/vercel';
 import sanity from '@sanity/astro';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  // Mantenemos el SSR para que los datos de Sanity carguen rápido
   output: 'server', 
   adapter: vercel({
     webAnalytics: { enabled: true },
@@ -19,30 +16,14 @@ export default defineConfig({
       projectId: '7451e60s',
       dataset: 'production',
       useCdn: true,
-      studioAt: '/admin'
+      // DESACTIVAMOS el Studio local. 
+      // Esto elimina el 100% de los errores de "createApp" y alias.
+      studioAt: false 
     }),
   ],
   vite: {
     plugins: [tailwindcss()],
-    resolve: {
-      alias: {
-        'astro/app/entrypoint': path.resolve(__dirname, './node_modules/astro/dist/core/app/index.js')
-      }
-    },
-    optimizeDeps: {
-      exclude: ['@astrojs/vercel']
-    },
-    build: {
-      chunkSizeWarningLimit: 2000,
-      rollupOptions: {
-        output: {
-          manualChunks(id) {
-            if (id.includes('node_modules/sanity')) {
-              return 'sanity';
-            }
-          }
-        }
-      }
-    }
+    // Adiós a los alias, resolve, manualChunks y hacks. 
+    // Queremos que el build sea ligero como una pluma.
   }
 });
