@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-// Welcome.astro - Página principal corregida
+// Welcome.astro - Estructura original preservada
 ---
 
 <Layout title="Schoenstatt Monterrey | Juventud Masculina">
@@ -46,6 +46,14 @@ import Layout from '../layouts/Layout.astro';
     </div>
 </Layout>
 
+<style is:global>
+    /* Esto asegura que el Navbar SIEMPRE esté por encima del contenido de esta página */
+    header, nav, .navbar {
+        position: fixed !important;
+        z-index: 9999 !important;
+    }
+</style>
+
 <style>
     :root {
         --jm-blue: #003876;
@@ -55,7 +63,6 @@ import Layout from '../layouts/Layout.astro';
         --jm-text: #2D3436;
     }
 
-    /* AJUSTE 1: Bajamos la prioridad del contenedor para que el Navbar mande */
     #welcome-page-container {
         font-family: 'Inter', system-ui, sans-serif;
         min-height: 100vh;
@@ -65,10 +72,9 @@ import Layout from '../layouts/Layout.astro';
         align-items: center;
         justify-content: center;
         position: relative;
-        z-index: 1; /* Nivel base */
+        z-index: 1; /* Nivel bajo para no estorbar al Nav */
     }
 
-    /* AJUSTE 2: Mandamos el fondo al nivel más profundo posible */
     #hero-background-fade {
         position: fixed;
         top: 0;
@@ -77,8 +83,8 @@ import Layout from '../layouts/Layout.astro';
         height: 100%;
         background: radial-gradient(circle at top right, rgba(173, 139, 69, 0.08), transparent),
                     radial-gradient(circle at bottom left, rgba(0, 56, 118, 0.04), transparent);
-        z-index: -10; /* Muy por debajo de todo */
-        pointer-events: none; /* Esto permite que los clics "atraviesen" el fondo */
+        z-index: -1; /* Lo mandamos atrás del contenido */
+        pointer-events: none; /* CLAVE: Los clics atraviesan esta capa */
     }
 
     main {
@@ -87,14 +93,13 @@ import Layout from '../layouts/Layout.astro';
         width: 100%;
         max-width: 1200px;
         margin: 0 auto;
-        padding: 4rem 1.5rem; /* Espacio para el Navbar */
+        padding: 4rem 1.5rem;
         display: grid;
         grid-template-columns: 1fr 380px;
         gap: 4rem;
         align-items: center;
     }
 
-    /* HERO TEXT */
     #hero {
         display: flex;
         flex-direction: column;
@@ -202,12 +207,12 @@ import Layout from '../layouts/Layout.astro';
         margin: 0;
     }
 
-    /* AJUSTE 3: Padding extra en móvil para que el Navbar no tape el Badge */
     @media (max-width: 1024px) {
         main {
             grid-template-columns: 1fr;
             gap: 3rem;
-            padding: 7rem 1.5rem 3rem; /* 7rem arriba para el Navbar */
+            /* Subimos el padding para que el Nav no tape el Badge */
+            padding: 8rem 1.5rem 3rem; 
         }
 
         #hero {
