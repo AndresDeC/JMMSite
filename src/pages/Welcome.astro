@@ -72,15 +72,14 @@ import Layout from '../layouts/Layout.astro';
     }
 
     #hero-background-fade {
-        position: fixed;
+        position: absolute; /* Cambiado de fixed a absolute */
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: radial-gradient(circle at top right, rgba(173, 139, 69, 0.08), transparent),
-                    radial-gradient(circle at bottom left, rgba(0, 56, 118, 0.04), transparent);
-        z-index: -1; /* Lo mandamos atrás del contenido */
-        pointer-events: none; /* CLAVE: Los clics atraviesan esta capa */
+        background: radial-gradient(...);
+        z-index: -1;
+        pointer-events: none;
     }
 
     main {
