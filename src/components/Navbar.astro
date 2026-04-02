@@ -76,12 +76,14 @@ const navItems = [
     menu?.classList.toggle('hidden');
   });
 
-  // Efecto de scroll: el nav se hace más pequeño y opaco al bajar
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      nav?.classList.add('top-2', 'scale-95');
+    if (window.scrollY > 20) {
+      // En lugar de escalar, solo ajustamos la posición y el brillo
+      nav?.classList.add('top-2');
+      nav?.querySelector('div')?.classList.add('shadow-2xl');
     } else {
-      nav?.classList.remove('top-2', 'scale-95');
+      nav?.classList.remove('top-2');
+      nav?.querySelector('div')?.classList.remove('shadow-2xl');
     }
   });
 </script>

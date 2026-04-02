@@ -59,6 +59,17 @@ const { title = "JM Monterrey | Misión Juvenil" } = Astro.props;
 		font-family: 'Inter', system-ui, sans-serif;
 		overflow-x: hidden; /* Vital para que nada "baile" en móvil */
 	}
+  /* Fuerza al Navbar a ignorar el área de scroll del cuerpo */
+  nav#main-nav {
+    pointer-events: auto !important;
+    touch-action: manipulation; /* Optimiza para toques rápidos en cel */
+  }
+
+  /* Asegura que el slot (el contenido) no se encime */
+  main {
+    position: relative;
+    z-index: 1;
+  }
 
 	/* --- SOLUCIÓN GLOBAL DE BRILLO --- */
 	
