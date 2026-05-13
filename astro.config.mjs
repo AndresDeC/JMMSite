@@ -20,5 +20,11 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    resolve: {
+      dedupe: ['sanity', 'react', 'react-dom'],
+    },
+    optimizeDeps: {
+      include: ['sanity', 'sanity/structure'],
+    },
   }
 });
