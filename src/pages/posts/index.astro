@@ -1,8 +1,8 @@
 ---
-import Layout from '../../layouts/Layout.astro';
 import type { SanityDocument } from "@sanity/client";
-import { sanityClient } from "sanity:client";
 import { createImageUrlBuilder, type SanityImageSource } from "@sanity/image-url";
+import { sanityClient } from "sanity:client";
+import Layout from '../../layouts/Layout.astro';
 
 const POSTS_QUERY = `*[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
   _id,
@@ -26,8 +26,7 @@ const urlFor = (source: SanityImageSource) =>
   <section class="container-jm py-20">
 
     <div class="text-center mb-16">
-      <p class="text-[#AD8B45] font-bold uppercase tracking-[0.3em] text-sm mb-4">Reflexiones & Noticias</p>
-      <h1 class="font-serif text-[#002855] mb-4">Blog</h1>
+      <h1 class="font-serif text-[#AD8B45] mb-4">Blog</h1>
       <p class="text-[#2D3436]/60 max-w-xl mx-auto text-lg">
         Artículos, reflexiones y noticias de la Juventud Masculina de Monterrey.
       </p>
