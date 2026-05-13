@@ -4,11 +4,11 @@ import { sanityClient } from "sanity:client";
 import { createImageUrlBuilder, type SanityImageSource } from "@sanity/image-url";
 import { PortableText } from "astro-portabletext";
 
-const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]`;
+const POST_QUERY = `*[_type == "blog" && slug.current == $slug][0]`;
 const post = await sanityClient.fetch<SanityDocument>(POST_QUERY, Astro.params);
 
 export async function getStaticPaths(): Promise<{ params: { slug: string } }> {
-  const SLUGS_QUERY = `*[_type == "post" && defined(slug.current)]{
+  const SLUGS_QUERY = `*[_type == "blog" && defined(slug.current)]{
     "params": {"slug": slug.current}
   }`;
   return await sanityClient.fetch(SLUGS_QUERY);
@@ -19,8 +19,8 @@ const urlFor = (source: SanityImageSource) =>
   projectId && dataset
     ? createImageUrlBuilder({ projectId, dataset }).image(source)
     : null;
-const postImageUrl = post.image
-  ? urlFor(post.image)?.width(550).height(310).url()
+const postImageUrl = post.mainImage
+  ? urlFor(post.mainImage)?.width(550).height(310).url()
   : null;
 ---
 

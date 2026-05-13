@@ -4,13 +4,13 @@ import { createImageUrlBuilder, type SanityImageSource } from "@sanity/image-url
 import { sanityClient } from "sanity:client";
 import Layout from '../../layouts/Layout.astro';
 
-const POSTS_QUERY = `*[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
+const POSTS_QUERY = `*[_type == "blog" && defined(slug.current)] | order(publishedAt desc) {
   _id,
   title,
   slug,
   publishedAt,
-  image,
-  "excerpt": array::join(string::split(pt::text(body), "")[0..200], "")
+  mainImage,
+  excerpt
 }`;
 
 const posts = await sanityClient.fetch<SanityDocument[]>(POSTS_QUERY);
@@ -40,8 +40,8 @@ const urlFor = (source: SanityImageSource) =>
     ) : (
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {posts.map(post => {
-          const imageUrl = post.image
-            ? urlFor(post.image)?.width(600).height(340).url()
+          const imageUrl = post.mainImage
+            ? urlFor(post.mainImage)?.width(600).height(340).url()
             : null;
           return (
             <a
