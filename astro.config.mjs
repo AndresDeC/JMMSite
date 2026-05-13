@@ -15,7 +15,7 @@ export default defineConfig({
       projectId: '7451e60s',
       dataset: 'production',
       useCdn: true,
-      studioAt: false 
+      studioAt: '/studio'
     }),
   ],
   vite: {
