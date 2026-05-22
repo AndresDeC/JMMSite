@@ -18,13 +18,6 @@ const GRUPO_QUERY = `*[_type == "grupoVida" && slug.current == $slug][0]{
 }`;
 const grupo = await sanityClient.fetch<SanityDocument>(GRUPO_QUERY, Astro.params);
 
-export async function getStaticPaths(): Promise<{ params: { slug: string } }> {
-  const SLUGS_QUERY = `*[_type == "grupoVida" && defined(slug.current)]{
-    "params": {"slug": slug.current}
-  }`;
-  return await sanityClient.fetch(SLUGS_QUERY);
-}
-
 const { projectId, dataset } = sanityClient.config();
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset

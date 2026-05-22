@@ -8,13 +8,6 @@ import Layout from '../../layouts/Layout.astro';
 const POST_QUERY = `*[_type == "blog" && slug.current == $slug][0]`;
 const post = await sanityClient.fetch<SanityDocument>(POST_QUERY, Astro.params);
 
-export async function getStaticPaths(): Promise<{ params: { slug: string } }> {
-  const SLUGS_QUERY = `*[_type == "blog" && defined(slug.current)]{
-    "params": {"slug": slug.current}
-  }`;
-  return await sanityClient.fetch(SLUGS_QUERY);
-}
-
 const { projectId, dataset } = sanityClient.config();
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
