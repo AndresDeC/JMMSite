@@ -29,6 +29,12 @@ export const reflexionType = defineType({
       type: 'datetime',
     }),
     defineField({
+      name: 'mainImage',
+      title: 'Imagen principal',
+      type: 'image',
+      options: { hotspot: true },
+    }),
+    defineField({
       name: 'excerpt',
       title: 'Resumen',
       type: 'text',
@@ -38,18 +44,38 @@ export const reflexionType = defineType({
       name: 'body',
       title: 'Contenido',
       type: 'array',
-      of: [{ type: 'block' }],
+      of: [
+        { type: 'block' },
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: 'caption',
+              title: 'Pie de foto',
+              type: 'string',
+            }),
+            defineField({
+              name: 'alt',
+              title: 'Texto alternativo',
+              type: 'string',
+            }),
+          ],
+        },
+      ],
     }),
   ],
   preview: {
     select: {
       title: 'title',
       author: 'author',
+      media: 'mainImage',
     },
-    prepare({ title, author }) {
+    prepare({ title, author, media }) {
       return {
         title,
         subtitle: author ? `Por ${author}` : '',
+        media,
       }
     },
   },
