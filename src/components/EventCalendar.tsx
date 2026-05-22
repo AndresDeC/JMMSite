@@ -51,6 +51,25 @@ function cat(key?: string) {
   return CATEGORIES[key ?? ''] ?? CATEGORIES['cat-juventud']
 }
 
+function sameDay(a: Date, b: Date) {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate()
+}
+
+function formatTime(d: Date) {
+  return d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })
+}
+
+function formatDateLong(d: Date) {
+  return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'long' })
+}
+
+// Devuelve "10:00 — 14:00" si end es el mismo día, "10 mayo, 10:00 — 12 mayo, 14:00" si no.
+function formatRange(start: Date, end?: Date | null) {
+  if (!end) return formatTime(start)
+  if (sameDay(start, end)) return `${formatTime(start)} — ${formatTime(end)}`
+  return `${formatDateLong(start)}, ${formatTime(start)} — ${formatDateLong(end)}, ${formatTime(end)}`
+}
+
 export default function EventCalendar({ events }: { events: Event[] }) {
   const today = new Date()
   const [year, setYear] = useState(today.getFullYear())
@@ -178,12 +197,13 @@ export default function EventCalendar({ events }: { events: Event[] }) {
             <div className="space-y-3">
               {(byDay[selected] ?? []).map(ev => {
                 const c = cat(ev.categoryColor)
-                const time = new Date(ev.date).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })
+                const start = new Date(ev.date)
+                const end = ev.endDate ? new Date(ev.endDate) : null
                 return (
                   <div key={ev._id} className={`rounded-2xl p-4 border ${c.bg} ${c.border}`}>
                     <div className="flex-1 min-w-0">
                       <p className={`text-[10px] font-bold uppercase tracking-widest ${c.text} opacity-70 mb-0.5`}>
-                        {c.label} · {time}
+                        {c.label} · {formatRange(start, end)}
                       </p>
                       <p className={`font-bold ${c.text} text-base`}>{ev.title}</p>
                       {ev.location && (
@@ -223,31 +243,44 @@ export default function EventCalendar({ events }: { events: Event[] }) {
           <div className="space-y-4">
             {upcoming.map(ev => {
               const c = cat(ev.categoryColor)
-              const d = new Date(ev.date)
+              const start = new Date(ev.date)
+              const end = ev.endDate ? new Date(ev.endDate) : null
               return (
                 <div
                   key={ev._id}
-                  className="bg-[#FAF9F6] border border-[#E8E4DD] rounded-2xl p-5 flex gap-4 items-start hover:shadow-md transition-shadow"
+                  className="bg-[#FAF9F6] border border-[#E8E4DD] rounded-2xl p-5 hover:shadow-md transition-shadow"
                 >
-                  {/* Date block */}
-                  <div className={`shrink-0 w-14 text-center rounded-2xl py-2 border ${c.bg} ${c.border}`}>
-                    <p className={`text-[10px] font-bold uppercase ${c.text} opacity-70`}>
-                      {MONTHS[d.getMonth()].slice(0, 3)}
-                    </p>
-                    <p className={`text-2xl font-black ${c.text} leading-tight`}>{d.getDate()}</p>
-                    <p className={`text-[10px] font-bold ${c.text} opacity-60`}>
-                      {d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}
-                    </p>
+                  <div className="flex gap-4 items-start">
+                    {/* Date block */}
+                    <div className={`shrink-0 w-14 text-center rounded-2xl py-2 border ${c.bg} ${c.border}`}>
+                      <p className={`text-[10px] font-bold uppercase ${c.text} opacity-70`}>
+                        {MONTHS[start.getMonth()].slice(0, 3)}
+                      </p>
+                      <p className={`text-2xl font-black ${c.text} leading-tight`}>{start.getDate()}</p>
+                      <p className={`text-[10px] font-bold ${c.text} opacity-60`}>
+                        {formatTime(start)}
+                      </p>
+                    </div>
+
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-[10px] font-bold uppercase tracking-widest ${c.text}`}>{c.label}</p>
+                      <p className="font-bold text-[#002855] text-base mt-0.5">{ev.title}</p>
+                      <p className="text-xs text-[#2D3436]/60 mt-1">
+                        🕒 {formatRange(start, end)}
+                      </p>
+                      {ev.location && (
+                        <p className="text-xs text-[#2D3436]/50 mt-1">📍 {ev.location}</p>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-[10px] font-bold uppercase tracking-widest ${c.text}`}>{c.label}</p>
-                    <p className="font-bold text-[#002855] text-base mt-0.5">{ev.title}</p>
-                    {ev.location && (
-                      <p className="text-xs text-[#2D3436]/50 mt-1">📍 {ev.location}</p>
-                    )}
-                  </div>
+                  {/* Description (full width below) */}
+                  {ev.description && (
+                    <div className="mt-4 pt-4 border-t border-[#E8E4DD] text-[#2D3436]/75 space-y-2">
+                      {renderPortableText(ev.description)}
+                    </div>
+                  )}
                 </div>
               )
             })}
