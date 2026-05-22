@@ -10,7 +10,9 @@ const EVENTS_QUERY = `*[_type == "event" && defined(slug.current)] | order(date 
   slug,
   date,
   endDate,
-  location
+  location,
+  description,
+  "imageUrl": image.asset->url
 }`;
 
 const events = await sanityClient.fetch<SanityDocument[]>(EVENTS_QUERY);

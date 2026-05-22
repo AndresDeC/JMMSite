@@ -1,5 +1,11 @@
 import { useState } from 'react'
 
+type PortableTextBlock = {
+  _type: string
+  style?: string
+  children?: { _type: string; text?: string }[]
+}
+
 type Event = {
   _id: string
   title: string
@@ -7,7 +13,27 @@ type Event = {
   endDate?: string
   categoryColor?: string
   location?: string
+  description?: PortableTextBlock[]
+  imageUrl?: string
   slug: { current: string }
+}
+
+function renderPortableText(blocks?: PortableTextBlock[]) {
+  if (!blocks || blocks.length === 0) return null
+  return blocks
+    .filter(b => b._type === 'block')
+    .map((block, i) => {
+      const text = (block.children ?? [])
+        .filter(c => c._type === 'span')
+        .map(c => c.text ?? '')
+        .join('')
+      if (!text) return null
+      return (
+        <p key={i} className="text-sm leading-relaxed">
+          {text}
+        </p>
+      )
+    })
 }
 
 // Para expandir a más ramas en el futuro, añadir aquí:
@@ -162,6 +188,18 @@ export default function EventCalendar({ events }: { events: Event[] }) {
                       <p className={`font-bold ${c.text} text-base`}>{ev.title}</p>
                       {ev.location && (
                         <p className={`text-xs mt-1.5 ${c.text} opacity-60`}>📍 {ev.location}</p>
+                      )}
+                      {ev.imageUrl && (
+                        <img
+                          src={ev.imageUrl}
+                          alt={ev.title}
+                          className="mt-3 w-full rounded-xl object-cover max-h-64"
+                        />
+                      )}
+                      {ev.description && (
+                        <div className={`mt-3 space-y-2 ${c.text} opacity-80`}>
+                          {renderPortableText(ev.description)}
+                        </div>
                       )}
                     </div>
                   </div>
