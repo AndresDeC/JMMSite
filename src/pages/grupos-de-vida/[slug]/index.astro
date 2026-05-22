@@ -3,9 +3,19 @@ import type { SanityDocument } from "@sanity/client";
 import { sanityClient } from "sanity:client";
 import { createImageUrlBuilder, type SanityImageSource } from "@sanity/image-url";
 import { PortableText } from "astro-portabletext";
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../../layouts/Layout.astro';
 
-const GRUPO_QUERY = `*[_type == "grupoVida" && slug.current == $slug][0]`;
+const GRUPO_QUERY = `*[_type == "grupoVida" && slug.current == $slug][0]{
+  ...,
+  "posts": *[_type == "grupoVidaPost" && references(^._id) && defined(slug.current)] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    publishedAt,
+    mainImage,
+    excerpt
+  }
+}`;
 const grupo = await sanityClient.fetch<SanityDocument>(GRUPO_QUERY, Astro.params);
 
 export async function getStaticPaths(): Promise<{ params: { slug: string } }> {
@@ -23,6 +33,8 @@ const urlFor = (source: SanityImageSource) =>
 const grupoImageUrl = grupo?.mainImage
   ? urlFor(grupo.mainImage)?.width(1200).height(600).url()
   : null;
+
+const posts: SanityDocument[] = Array.isArray(grupo?.posts) ? grupo.posts : [];
 ---
 
 <Layout title={`${grupo?.title ?? 'Grupo de Vida'} | JM Monterrey`}>
@@ -82,6 +94,56 @@ const grupoImageUrl = grupo?.mainImage
     <div class="prose-jm">
       {Array.isArray(grupo.body) && <PortableText value={grupo.body} />}
     </div>
+
+    {/* Posts del grupo */}
+    <section class="mt-16 pt-12 border-t border-[#E8E4DD]">
+      <h2 class="font-serif text-[#AD8B45] mb-8">Posts del grupo</h2>
+
+      {posts.length === 0 ? (
+        <p class="text-[#2D3436]/50 italic">Este grupo aún no tiene posts publicados.</p>
+      ) : (
+        <div class="space-y-6">
+          {posts.map(post => {
+            const postImg = post.mainImage
+              ? urlFor(post.mainImage)?.width(400).height(260).url()
+              : null;
+            return (
+              <a
+                href={`/grupos-de-vida/${grupo.slug.current}/${post.slug.current}`}
+                class="group flex gap-5 items-start bg-[#FAF9F6] border border-[#E8E4DD] rounded-2xl p-4 hover:shadow-md transition-all no-underline"
+              >
+                {postImg && (
+                  <div class="shrink-0 w-28 h-28 rounded-xl overflow-hidden hidden sm:block">
+                    <img
+                      src={postImg}
+                      alt={post.title}
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      width="400"
+                      height="260"
+                    />
+                  </div>
+                )}
+                <div class="flex-1 min-w-0">
+                  {post.publishedAt && (
+                    <p class="text-[#AD8B45] text-[10px] font-bold uppercase tracking-widest mb-1">
+                      {new Date(post.publishedAt).toLocaleDateString('es-MX', {
+                        year: 'numeric', month: 'long', day: 'numeric'
+                      })}
+                    </p>
+                  )}
+                  <h3 class="font-bold text-[#002855] text-lg leading-tight group-hover:text-[#AD8B45] transition-colors">
+                    {post.title}
+                  </h3>
+                  {post.excerpt && (
+                    <p class="text-sm text-[#2D3436]/60 mt-1.5 line-clamp-2">{post.excerpt}</p>
+                  )}
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      )}
+    </section>
 
   </article>
 </Layout>

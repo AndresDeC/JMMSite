@@ -1,0 +1,132 @@
+---
+import type { SanityDocument } from "@sanity/client";
+import { sanityClient } from "sanity:client";
+import { createImageUrlBuilder, type SanityImageSource } from "@sanity/image-url";
+import { PortableText } from "astro-portabletext";
+import Layout from '../../../layouts/Layout.astro';
+
+const POST_QUERY = `*[_type == "grupoVidaPost" && slug.current == $postSlug && grupo->slug.current == $slug][0]{
+  ...,
+  "grupoTitle": grupo->title,
+  "grupoSlug": grupo->slug.current
+}`;
+const post = await sanityClient.fetch<SanityDocument>(POST_QUERY, Astro.params);
+
+export async function getStaticPaths(): Promise<{ params: { slug: string; postSlug: string } }> {
+  const SLUGS_QUERY = `*[_type == "grupoVidaPost" && defined(slug.current) && defined(grupo->slug.current)]{
+    "params": {
+      "slug": grupo->slug.current,
+      "postSlug": slug.current
+    }
+  }`;
+  return await sanityClient.fetch(SLUGS_QUERY);
+}
+
+const { projectId, dataset } = sanityClient.config();
+const urlFor = (source: SanityImageSource) =>
+  projectId && dataset
+    ? createImageUrlBuilder({ projectId, dataset }).image(source)
+    : null;
+const postImageUrl = post?.mainImage
+  ? urlFor(post.mainImage)?.width(1200).height(600).url()
+  : null;
+---
+
+<Layout title={`${post?.title ?? 'Post'} | ${post?.grupoTitle ?? 'Grupo de Vida'} | JM Monterrey`}>
+  <article class="container-jm py-12 max-w-3xl mx-auto">
+
+    <a href={`/grupos-de-vida/${post?.grupoSlug ?? ''}`} class="inline-flex items-center gap-2 text-[#AD8B45] font-bold text-sm uppercase tracking-widest hover:gap-3 transition-all no-underline mb-10">
+      <span aria-hidden="true">&larr;</span> Volver a {post?.grupoTitle ?? 'Grupo de Vida'}
+    </a>
+
+    {postImageUrl && (
+      <div class="rounded-3xl overflow-hidden mb-10 shadow-lg">
+        <img
+          src={postImageUrl}
+          alt={post.title}
+          class="w-full aspect-video object-cover"
+          width="1200"
+          height="600"
+        />
+      </div>
+    )}
+
+    <header class="mb-10">
+      {post.publishedAt && (
+        <p class="text-[#AD8B45] text-xs font-bold uppercase tracking-widest mb-3">
+          {new Date(post.publishedAt).toLocaleDateString('es-MX', {
+            year: 'numeric', month: 'long', day: 'numeric'
+          })}
+        </p>
+      )}
+      <h1 class="font-serif text-[#002855] leading-tight mb-4">{post.title}</h1>
+      {post.author && (
+        <p class="text-[#2D3436]/50 text-sm">Por <span class="font-semibold">{post.author}</span></p>
+      )}
+    </header>
+
+    {post.excerpt && (
+      <p class="text-[#2D3436]/70 text-lg leading-relaxed border-l-4 border-[#AD8B45] pl-5 mb-10 italic">
+        {post.excerpt}
+      </p>
+    )}
+
+    <div class="prose-jm">
+      {Array.isArray(post.body) && <PortableText value={post.body} />}
+    </div>
+
+  </article>
+</Layout>
+
+<style>
+  .prose-jm :global(p) {
+    color: #2D3436;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+  }
+  .prose-jm :global(h2) {
+    color: #002855;
+    font-family: 'Playfair Display', serif;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .prose-jm :global(h3) {
+    color: #002855;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose-jm :global(strong) {
+    color: #002855;
+    font-weight: 700;
+  }
+  .prose-jm :global(em) {
+    color: #AD8B45;
+  }
+  .prose-jm :global(ul), .prose-jm :global(ol) {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .prose-jm :global(li) {
+    color: #2D3436;
+    line-height: 1.8;
+    margin-bottom: 0.5rem;
+  }
+  .prose-jm :global(blockquote) {
+    border-left: 4px solid #AD8B45;
+    padding-left: 1.25rem;
+    margin: 2rem 0;
+    color: #2D3436;
+    font-style: italic;
+  }
+  .prose-jm :global(img) {
+    border-radius: 1rem;
+    margin: 2rem auto;
+    max-width: 100%;
+  }
+  .prose-jm :global(a) {
+    color: #AD8B45;
+    text-decoration: underline;
+  }
+</style>
