@@ -5,25 +5,24 @@ type Event = {
   title: string
   date: string
   endDate?: string
-  categoryColor: string
-  shortDescription?: string
+  categoryColor?: string
   location?: string
-  registrationUrl?: string
   slug: { current: string }
 }
 
+// Para expandir a más ramas en el futuro, añadir aquí:
+// 'cat-familias':  { bg: 'bg-emerald-50', text: 'text-emerald-900', dot: 'bg-emerald-600', border: 'border-emerald-200', label: 'Familias' },
+// 'cat-mujeres':   { bg: 'bg-purple-50', text: 'text-purple-900', dot: 'bg-purple-600', border: 'border-purple-200', label: 'Mujeres de Schoenstatt' },
+// 'cat-general':   { bg: 'bg-amber-50', text: 'text-amber-900', dot: 'bg-[#AD8B45]', border: 'border-amber-200', label: 'General' },
 const CATEGORIES: Record<string, { bg: string; text: string; dot: string; border: string; label: string }> = {
   'cat-juventud': { bg: 'bg-blue-50', text: 'text-blue-900', dot: 'bg-[#003366]', border: 'border-blue-200', label: 'Juventud Masculina' },
-  'cat-familias':  { bg: 'bg-emerald-50', text: 'text-emerald-900', dot: 'bg-emerald-600', border: 'border-emerald-200', label: 'Familias' },
-  'cat-mujeres':   { bg: 'bg-purple-50', text: 'text-purple-900', dot: 'bg-purple-600', border: 'border-purple-200', label: 'Mujeres de Schoenstatt' },
-  'cat-general':   { bg: 'bg-amber-50', text: 'text-amber-900', dot: 'bg-[#AD8B45]', border: 'border-amber-200', label: 'General' },
 }
 
 const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 const WEEKDAYS = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb']
 
-function cat(key: string) {
-  return CATEGORIES[key] ?? CATEGORIES['cat-general']
+function cat(key?: string) {
+  return CATEGORIES[key ?? ''] ?? CATEGORIES['cat-juventud']
 }
 
 export default function EventCalendar({ events }: { events: Event[] }) {
@@ -156,28 +155,13 @@ export default function EventCalendar({ events }: { events: Event[] }) {
                 const time = new Date(ev.date).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })
                 return (
                   <div key={ev._id} className={`rounded-2xl p-4 border ${c.bg} ${c.border}`}>
-                    <div className="flex items-start justify-between gap-4 flex-wrap">
-                      <div className="flex-1 min-w-0">
-                        <p className={`text-[10px] font-bold uppercase tracking-widest ${c.text} opacity-70 mb-0.5`}>
-                          {c.label} · {time}
-                        </p>
-                        <p className={`font-bold ${c.text} text-base`}>{ev.title}</p>
-                        {ev.shortDescription && (
-                          <p className={`text-sm mt-1 ${c.text} opacity-75`}>{ev.shortDescription}</p>
-                        )}
-                        {ev.location && (
-                          <p className={`text-xs mt-1.5 ${c.text} opacity-60`}>📍 {ev.location}</p>
-                        )}
-                      </div>
-                      {ev.registrationUrl && (
-                        <a
-                          href={ev.registrationUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="shrink-0 px-4 py-2 bg-[#002855] text-white text-xs font-bold rounded-xl hover:bg-[#AD8B45] transition-colors"
-                        >
-                          Registrarse
-                        </a>
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-[10px] font-bold uppercase tracking-widest ${c.text} opacity-70 mb-0.5`}>
+                        {c.label} · {time}
+                      </p>
+                      <p className={`font-bold ${c.text} text-base`}>{ev.title}</p>
+                      {ev.location && (
+                        <p className={`text-xs mt-1.5 ${c.text} opacity-60`}>📍 {ev.location}</p>
                       )}
                     </div>
                   </div>
@@ -222,24 +206,10 @@ export default function EventCalendar({ events }: { events: Event[] }) {
                   <div className="flex-1 min-w-0">
                     <p className={`text-[10px] font-bold uppercase tracking-widest ${c.text}`}>{c.label}</p>
                     <p className="font-bold text-[#002855] text-base mt-0.5">{ev.title}</p>
-                    {ev.shortDescription && (
-                      <p className="text-sm text-[#2D3436]/60 mt-1 line-clamp-2">{ev.shortDescription}</p>
-                    )}
                     {ev.location && (
                       <p className="text-xs text-[#2D3436]/50 mt-1">📍 {ev.location}</p>
                     )}
                   </div>
-
-                  {ev.registrationUrl && (
-                    <a
-                      href={ev.registrationUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="shrink-0 self-center px-4 py-2 bg-[#002855] text-white text-xs font-bold rounded-xl hover:bg-[#AD8B45] transition-colors hidden sm:block"
-                    >
-                      Registrarse
-                    </a>
-                  )}
                 </div>
               )
             })}
@@ -247,15 +217,17 @@ export default function EventCalendar({ events }: { events: Event[] }) {
         )}
       </div>
 
-      {/* Legend */}
-      <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center py-2">
-        {Object.entries(CATEGORIES).map(([key, c]) => (
-          <div key={key} className="flex items-center gap-2">
-            <span className={`w-2.5 h-2.5 rounded-full ${c.dot}`} />
-            <span className="text-xs text-[#2D3436]/50 font-medium">{c.label}</span>
-          </div>
-        ))}
-      </div>
+      {/* Legend — solo se muestra cuando hay más de una categoría */}
+      {Object.keys(CATEGORIES).length > 1 && (
+        <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center py-2">
+          {Object.entries(CATEGORIES).map(([key, c]) => (
+            <div key={key} className="flex items-center gap-2">
+              <span className={`w-2.5 h-2.5 rounded-full ${c.dot}`} />
+              <span className="text-xs text-[#2D3436]/50 font-medium">{c.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
 
     </div>
   )

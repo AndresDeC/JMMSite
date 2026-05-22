@@ -18,6 +18,20 @@ export const eventType = defineType({
       options: { source: 'title' },
       validation: (Rule) => Rule.required(),
     }),
+    // Para expandir a más ramas en el futuro, descomentar este campo y agregar
+    // las opciones correspondientes (cat-familias, cat-mujeres, cat-general):
+    // defineField({
+    //   name: 'categoryColor',
+    //   title: 'Categoría / Color',
+    //   type: 'string',
+    //   options: {
+    //     list: [
+    //       { title: 'Juventud Masculina (Azul)', value: 'cat-juventud' },
+    //     ],
+    //     layout: 'dropdown',
+    //   },
+    //   initialValue: 'cat-juventud',
+    // }),
     defineField({
       name: 'date',
       title: 'Fecha y hora',
