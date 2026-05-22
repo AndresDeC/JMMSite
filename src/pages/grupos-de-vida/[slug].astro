@@ -1,0 +1,140 @@
+---
+import type { SanityDocument } from "@sanity/client";
+import { sanityClient } from "sanity:client";
+import { createImageUrlBuilder, type SanityImageSource } from "@sanity/image-url";
+import { PortableText } from "astro-portabletext";
+import Layout from '../../layouts/Layout.astro';
+
+const GRUPO_QUERY = `*[_type == "grupoVida" && slug.current == $slug][0]`;
+const grupo = await sanityClient.fetch<SanityDocument>(GRUPO_QUERY, Astro.params);
+
+export async function getStaticPaths(): Promise<{ params: { slug: string } }> {
+  const SLUGS_QUERY = `*[_type == "grupoVida" && defined(slug.current)]{
+    "params": {"slug": slug.current}
+  }`;
+  return await sanityClient.fetch(SLUGS_QUERY);
+}
+
+const { projectId, dataset } = sanityClient.config();
+const urlFor = (source: SanityImageSource) =>
+  projectId && dataset
+    ? createImageUrlBuilder({ projectId, dataset }).image(source)
+    : null;
+const grupoImageUrl = grupo?.mainImage
+  ? urlFor(grupo.mainImage)?.width(1200).height(600).url()
+  : null;
+---
+
+<Layout title={`${grupo?.title ?? 'Grupo de Vida'} | JM Monterrey`}>
+  <article class="container-jm py-12 max-w-3xl mx-auto">
+
+    <a href="/grupos-de-vida" class="inline-flex items-center gap-2 text-[#AD8B45] font-bold text-sm uppercase tracking-widest hover:gap-3 transition-all no-underline mb-10">
+      <span aria-hidden="true">&larr;</span> Volver a Grupos de Vida
+    </a>
+
+    {grupoImageUrl && (
+      <div class="rounded-3xl overflow-hidden mb-10 shadow-lg">
+        <img
+          src={grupoImageUrl}
+          alt={grupo.title}
+          class="w-full aspect-video object-cover"
+          width="1200"
+          height="600"
+        />
+      </div>
+    )}
+
+    <header class="mb-10">
+      {grupo.patron && (
+        <p class="text-[#AD8B45] text-xs font-bold uppercase tracking-widest mb-3">
+          {grupo.patron}
+        </p>
+      )}
+      <h1 class="font-serif text-[#002855] leading-tight mb-4">{grupo.title}</h1>
+      {grupo.tagline && (
+        <p class="text-[#2D3436]/70 text-lg leading-relaxed italic">
+          {grupo.tagline}
+        </p>
+      )}
+    </header>
+
+    {(grupo.meetingInfo || (Array.isArray(grupo.leaders) && grupo.leaders.length > 0)) && (
+      <div class="bg-[#FAF9F6] border border-[#E8E4DD] rounded-3xl p-6 mb-10 grid gap-4 sm:grid-cols-2">
+        {grupo.meetingInfo && (
+          <div>
+            <p class="text-[#AD8B45] text-[10px] font-bold uppercase tracking-widest mb-1">Reuniones</p>
+            <p class="text-[#2D3436] text-sm">📅 {grupo.meetingInfo}</p>
+          </div>
+        )}
+        {Array.isArray(grupo.leaders) && grupo.leaders.length > 0 && (
+          <div>
+            <p class="text-[#AD8B45] text-[10px] font-bold uppercase tracking-widest mb-1">Coordinadores</p>
+            <ul class="text-[#2D3436] text-sm space-y-0.5">
+              {grupo.leaders.map((l: string) => (
+                <li>👤 {l}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    )}
+
+    <div class="prose-jm">
+      {Array.isArray(grupo.body) && <PortableText value={grupo.body} />}
+    </div>
+
+  </article>
+</Layout>
+
+<style>
+  .prose-jm :global(p) {
+    color: #2D3436;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+  }
+  .prose-jm :global(h2) {
+    color: #002855;
+    font-family: 'Playfair Display', serif;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .prose-jm :global(h3) {
+    color: #002855;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose-jm :global(strong) {
+    color: #002855;
+    font-weight: 700;
+  }
+  .prose-jm :global(em) {
+    color: #AD8B45;
+  }
+  .prose-jm :global(ul), .prose-jm :global(ol) {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .prose-jm :global(li) {
+    color: #2D3436;
+    line-height: 1.8;
+    margin-bottom: 0.5rem;
+  }
+  .prose-jm :global(blockquote) {
+    border-left: 4px solid #AD8B45;
+    padding-left: 1.25rem;
+    margin: 2rem 0;
+    color: #2D3436;
+    font-style: italic;
+  }
+  .prose-jm :global(img) {
+    border-radius: 1rem;
+    margin: 2rem auto;
+    max-width: 100%;
+  }
+  .prose-jm :global(a) {
+    color: #AD8B45;
+    text-decoration: underline;
+  }
+</style>
