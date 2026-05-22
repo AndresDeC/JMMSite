@@ -1,0 +1,35 @@
+---
+import type { SanityDocument } from "@sanity/client";
+import { sanityClient } from "sanity:client";
+import Layout from '../layouts/Layout.astro';
+import EventCalendar from '../components/EventCalendar.tsx';
+
+const EVENTS_QUERY = `*[_type == "event" && defined(slug.current)] | order(date asc) {
+  _id,
+  title,
+  slug,
+  categoryColor,
+  date,
+  endDate,
+  shortDescription,
+  location,
+  registrationUrl
+}`;
+
+const events = await sanityClient.fetch<SanityDocument[]>(EVENTS_QUERY);
+---
+
+<Layout title="Eventos | JM Monterrey">
+  <section class="container-jm py-20">
+
+    <div class="text-center mb-16">
+      <h1 class="font-serif text-[#AD8B45] mb-4">Eventos</h1>
+      <p class="text-[#2D3436]/60 max-w-xl mx-auto text-lg">
+        Retiros, encuentros y actividades de la Juventud Masculina de Monterrey.
+      </p>
+    </div>
+
+    <EventCalendar events={events} client:load />
+
+  </section>
+</Layout>
