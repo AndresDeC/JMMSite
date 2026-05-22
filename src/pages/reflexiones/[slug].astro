@@ -1,0 +1,107 @@
+---
+import type { SanityDocument } from "@sanity/client";
+import { sanityClient } from "sanity:client";
+import { PortableText } from "astro-portabletext";
+import Layout from '../../layouts/Layout.astro';
+
+const REFLEXION_QUERY = `*[_type == "reflexion" && slug.current == $slug][0]`;
+const reflexion = await sanityClient.fetch<SanityDocument>(REFLEXION_QUERY, Astro.params);
+---
+
+<Layout title={`${reflexion.title} | Reflexiones | JM Monterrey`}>
+  <article class="container-jm py-12 max-w-3xl mx-auto">
+
+    <a href="/reflexiones" class="inline-flex items-center gap-2 text-[#AD8B45] font-bold text-sm uppercase tracking-widest hover:gap-3 transition-all no-underline mb-10 block">
+      <span aria-hidden="true">&larr;</span> Volver a Reflexiones
+    </a>
+
+    <header class="mb-10 text-center relative">
+      <span
+        aria-hidden="true"
+        class="absolute -top-10 left-1/2 -translate-x-1/2 text-[#AD8B45]/15 font-serif text-[10rem] leading-none select-none pointer-events-none"
+      >
+        &ldquo;
+      </span>
+
+      <div class="relative">
+        {reflexion.publishedAt && (
+          <p class="text-[#AD8B45] text-xs font-bold uppercase tracking-widest mb-3">
+            {new Date(reflexion.publishedAt).toLocaleDateString('es-MX', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
+          </p>
+        )}
+        <h1 class="font-serif text-[#002855] leading-tight mb-4">{reflexion.title}</h1>
+        {reflexion.author && (
+          <p class="text-[#2D3436]/50 text-sm">Por <span class="font-semibold">{reflexion.author}</span></p>
+        )}
+      </div>
+    </header>
+
+    {reflexion.excerpt && (
+      <p class="text-[#2D3436]/70 text-lg leading-relaxed border-l-4 border-[#AD8B45] pl-5 mb-10 italic">
+        {reflexion.excerpt}
+      </p>
+    )}
+
+    <div class="prose-jm">
+      {Array.isArray(reflexion.body) && <PortableText value={reflexion.body} />}
+    </div>
+
+  </article>
+</Layout>
+
+<style>
+  .prose-jm :global(p) {
+    color: #2D3436;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+  }
+  .prose-jm :global(h2) {
+    color: #002855;
+    font-family: 'Playfair Display', serif;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .prose-jm :global(h3) {
+    color: #002855;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose-jm :global(strong) {
+    color: #002855;
+    font-weight: 700;
+  }
+  .prose-jm :global(em) {
+    color: #AD8B45;
+  }
+  .prose-jm :global(ul), .prose-jm :global(ol) {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .prose-jm :global(li) {
+    color: #2D3436;
+    line-height: 1.8;
+    margin-bottom: 0.5rem;
+  }
+  .prose-jm :global(blockquote) {
+    border-left: 4px solid #AD8B45;
+    padding-left: 1.25rem;
+    margin: 2rem 0;
+    color: #2D3436;
+    font-style: italic;
+  }
+  .prose-jm :global(img) {
+    border-radius: 1rem;
+    margin: 2rem auto;
+    max-width: 100%;
+  }
+  .prose-jm :global(a) {
+    color: #AD8B45;
+    text-decoration: underline;
+  }
+</style>

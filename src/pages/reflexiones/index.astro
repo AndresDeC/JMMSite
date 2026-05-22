@@ -1,0 +1,89 @@
+---
+import type { SanityDocument } from "@sanity/client";
+import { sanityClient } from "sanity:client";
+import Layout from '../../layouts/Layout.astro';
+
+const REFLEXIONES_QUERY = `*[_type == "reflexion" && defined(slug.current)] | order(publishedAt desc) {
+  _id,
+  title,
+  slug,
+  author,
+  publishedAt,
+  excerpt
+}`;
+
+const reflexiones = await sanityClient.fetch<SanityDocument[]>(REFLEXIONES_QUERY);
+---
+
+<Layout title="Reflexiones | JM Monterrey">
+  <section class="container-jm py-20">
+
+    <div class="text-center mb-16">
+      <h1 class="font-serif text-[#AD8B45] mb-4">Reflexiones</h1>
+      <p class="text-[#2D3436]/60 max-w-xl mx-auto text-lg">
+        Palabras para la vida interior. Meditaciones, oraciones y pensamientos
+        que nos acompañan en el camino de la Juventud Masculina de Schoenstatt.
+      </p>
+    </div>
+
+    {reflexiones.length === 0 ? (
+      <div class="text-center py-24 text-[#2D3436]/40">
+        <p class="text-2xl font-serif mb-2">Próximamente</p>
+        <p class="text-base">Aquí aparecerán las reflexiones publicadas.</p>
+      </div>
+    ) : (
+      <div class="grid gap-8 md:grid-cols-2">
+        {reflexiones.map(reflexion => (
+          <a
+            href={`/reflexiones/${reflexion.slug.current}`}
+            class="group bg-[#FAF9F6] rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col relative overflow-hidden no-underline"
+          >
+            <span
+              aria-hidden="true"
+              class="absolute -top-6 -left-2 text-[#AD8B45]/15 font-serif text-[8rem] leading-none select-none pointer-events-none"
+            >
+              &ldquo;
+            </span>
+
+            <div class="relative flex flex-col flex-1">
+              {reflexion.publishedAt && (
+                <p class="text-[#AD8B45] text-xs font-bold uppercase tracking-widest mb-3">
+                  {new Date(reflexion.publishedAt).toLocaleDateString('es-MX', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </p>
+              )}
+
+              <h2
+                class="text-[#002855] font-bold font-serif leading-snug mb-4 group-hover:text-[#AD8B45] transition-colors"
+                style="font-size: clamp(1.25rem, 2.5vw, 1.6rem) !important;"
+              >
+                {reflexion.title}
+              </h2>
+
+              {reflexion.excerpt && (
+                <p class="text-[#2D3436]/70 leading-relaxed flex-1 italic line-clamp-4">
+                  {reflexion.excerpt}
+                </p>
+              )}
+
+              <div class="mt-6 flex items-center justify-between">
+                {reflexion.author ? (
+                  <p class="text-[#002855] text-sm font-bold">
+                    &mdash; {reflexion.author}
+                  </p>
+                ) : <span />}
+                <span class="text-[#002855] text-sm font-bold inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                  Leer <span aria-hidden="true">&rarr;</span>
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+
+  </section>
+</Layout>
